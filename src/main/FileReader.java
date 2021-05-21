@@ -37,8 +37,8 @@ public class FileReader {
 
                 String[] parts = line.split(COMMA_DELIMITER);
 
-                Integer projectId = Integer.valueOf(parts[1].trim());
                 Integer employeeId = Integer.valueOf(parts[0].trim());
+                Integer projectId = Integer.valueOf(parts[1].trim());
 
                 LocalDate dateFrom = parseDate(parts[2].trim());
                 LocalDate dateTo = parseDate(parts[3].trim());
@@ -64,10 +64,10 @@ public class FileReader {
 
         String[] date = s.trim().split("-");
 
-        int yearFrom = Integer.valueOf(date[0]);
-        int monthFrom = Integer.valueOf(date[1]);
-        int dayFrom = Integer.valueOf(date[2]);
+        int year = Integer.valueOf(date[0]);
+        int month = Integer.valueOf(date[1]);
+        int day = Integer.valueOf(date[2]);
 
-        return LocalDate.of(yearFrom, monthFrom, dayFrom);
+        return LocalDate.of(year, month, day);
     }
 }

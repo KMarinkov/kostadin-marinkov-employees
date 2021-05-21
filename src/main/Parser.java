@@ -5,9 +5,10 @@ import java.util.*;
 public class Parser {
 
     //  ProjectId<EmployeeId, DaysTogether>
+    private Map<Integer, Map<Integer, Date>> projectIdWithMap;
+
     private Map<Integer, Map<Integer, Long>> employeeIdWithMap;
 
-    private Map<Integer, Map<Integer, Date>> projectIdWithMap;
     private Set<Entry> entrySet;
 
 
@@ -63,27 +64,32 @@ public class Parser {
 
     public void populateEntrySet() {
 
-        Integer id1 = 0;
-        Integer id2 = 0;
-        Long maxDays = 0L;
+        Integer employeeId1 = 0;
+        Integer employeeId2 = 0;
+        Long maxDaysWorkingTogether = 0L;
 
         // Search for the pair with max days together and filter duplicates via HashSet
         for (var entries : employeeIdWithMap.entrySet()) {
 
             for (var entries2 : entries.getValue().entrySet()) {
-                if (entries2.getValue() >= maxDays) {
+                if (entries2.getValue() >= maxDaysWorkingTogether) {
 
-                    maxDays = entries2.getValue();
-                    id1 = entries.getKey();
-                    id2 = entries2.getKey();
+                    maxDaysWorkingTogether = entries2.getValue();
+                    employeeId1 = entries.getKey();
+                    employeeId2 = entries2.getKey();
                 }
             }
 
-            addEntry(new Entry(id1, id2, maxDays));
+            if (maxDaysWorkingTogether == 0) {
+                continue;
+            }
+
+            addEntry(new Entry(employeeId1, employeeId2, maxDaysWorkingTogether));
         }
     }
 
     private void addEntry(Entry entry) {
+
         if (!entrySet.isEmpty()) {
             Entry entry1 = entrySet.stream()
                     .findFirst().get();
@@ -102,6 +108,11 @@ public class Parser {
     }
 
     public void printResult() {
+        if (entrySet.isEmpty()) {
+            System.out.println("No matches!");
+        }
+
+        System.out.println("----------------------Results----------------------");
         for (var entry : entrySet) {
             System.out.println(entry);
         }
